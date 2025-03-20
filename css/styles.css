@@ -1,0 +1,215 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    background-color: #191A1A;
+    color: #e0e0e0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  /* Player Container */
+  .player-container {
+    width: 90%;
+    max-width: 500px;
+    background-color: #222324;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Track Info */
+  .track-info {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .track-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .track-artist {
+    font-size: 1rem;
+    color: #b0b0b0;
+  }
+  
+  /* Progress Bar */
+  .progress-container {
+    height: 8px;
+    background-color: #333;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    background-color: #1DB954; /* Spotify green as an example */
+    border-radius: 4px;
+    width: 0%;
+  }
+  
+  /* Time Display */
+  .time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #b0b0b0;
+    margin-bottom: 15px;
+  }
+  
+  /* Controls */
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .control-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #e0e0e0;
+    transition: all 0.2s ease;
+  }
+  
+  .control-button:hover {
+    color: #1DB954;
+    transform: scale(1.1);
+  }
+  
+  /* Placeholder icons using CSS */
+  .icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    position: relative;
+  }
+  
+  .play-icon {
+    border-style: solid;
+    border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent #e0e0e0;
+    margin-left: 2px;
+  }
+  
+  .pause-icon {
+    display: none; /* Hide initially */
+    width: 20px;
+    height: 24px;
+  }
+  
+  .pause-icon::before, .pause-icon::after {
+    content: "";
+    position: absolute;
+    width: 6px;
+    height: 24px;
+    background-color: #e0e0e0;
+    top: 0;
+  }
+  
+  .pause-icon::before {
+    left: 0;
+  }
+  
+  .pause-icon::after {
+    right: 0;
+  }
+  
+  .prev-icon {
+    border-style: solid;
+    border-width: 12px 20px 12px 0;
+    border-color: transparent #e0e0e0 transparent transparent;
+    margin-right: 2px;
+  }
+  
+  .next-icon {
+    border-style: solid;
+    border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent #e0e0e0;
+  }
+  
+  .volume-icon {
+    position: relative;
+    width: 24px;
+    height: 24px;
+  }
+  
+  .volume-icon::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 8px;
+    height: 8px;
+    background-color: #e0e0e0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+  
+  .volume-icon::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #e0e0e0;
+    border-left: none;
+    border-radius: 0 50% 50% 0;
+  }
+  
+  /* Volume Slider */
+  .volume-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .volume-slider {
+    -webkit-appearance: none;
+    width: 80px;
+    height: 4px;
+    background: #333;
+    border-radius: 2px;
+    outline: none;
+  }
+  
+  .volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1DB954;
+    cursor: pointer;
+  }
+  
+  .volume-slider::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #1DB954;
+    cursor: pointer;
+    border: none;
+  }
+  
+  #visualizer-canvas {
+    display: block;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background-color: #333;
+  }
+  

@@ -1,0 +1,29 @@
+name: Update Tracks JSON
+
+on:
+  push:
+    paths:
+      - 'audio/**'
+
+jobs:
+  update-tracks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          
+      - name: Generate tracks.json
+        run: |
+          node .github/scripts/generate-tracks.js
+          
+      - name: Commit updated tracks.json
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add tracks.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update tracks.json"
+          git push
