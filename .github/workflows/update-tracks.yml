@@ -8,6 +8,8 @@ on:
 jobs:
   update-tracks:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v2
       
@@ -21,9 +23,7 @@ jobs:
           node .github/scripts/generate-tracks.js
           
       - name: Commit updated tracks.json
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add tracks.json
-          git diff --quiet && git diff --staged --quiet || git commit -m "Update tracks.json"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update tracks.json
+          file_pattern: tracks.json
