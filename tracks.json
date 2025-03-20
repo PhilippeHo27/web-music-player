@@ -1,13 +1,22 @@
 [
-    {
-      "title": "That Day (Original Mix)",
-      "artist": "Luca 606",
-      "src": "audio/Luca 606 - That Day (Original Mix).mp3"
-    },
-    {
-      "title": "Siegfried (Original Mix)",
-      "artist": "Manuel Guzman",
-      "src": "audio/Manuel Guzman - Siegfried (Original Mix).mp3"
-    }
-  ]
-  
+  {
+    "title": "Go Home (Extended)",
+    "artist": "Evenm",
+    "src": "audio/Evenm - Go Home (Extended).mp3"
+  },
+  {
+    "title": "That Day (Original Mix)",
+    "artist": "Luca 606",
+    "src": "audio/Luca 606 - That Day (Original Mix).mp3"
+  },
+  {
+    "title": "Siegfried (Original Mix)",
+    "artist": "Manuel Guzman",
+    "src": "audio/Manuel Guzman - Siegfried (Original Mix).mp3"
+  },
+  {
+    "title": "science_fiction_laser_003",
+    "artist": "Unknown Artist",
+    "src": "audio/science_fiction_laser_003.mp3"
+  }
+]
