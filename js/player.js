@@ -12,13 +12,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const trackDurationDisplay = document.getElementById('track-duration');
     const playIcon = document.getElementById('play-icon');
     const pauseIcon = document.getElementById('pause-icon');
+    const volumeHighIcon = document.getElementById('volume-high-icon');
+    const volumeMuteIcon = document.getElementById('volume-mute-icon');
+    //const albumArt = document.getElementById('album-art');
 
     let currentTrackIndex = 0;
     let previousVolume = 1.0;
     let audioContext = null;
-    let analyser = null;
-    let dataArray = null;
     let tracks = []
+
 
     // Load tracks from JSON file
     fetch('tracks.json')
@@ -49,31 +51,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize audio context and visualizer
     function initAudio() {
         if (audioContext === null) {
-            // Create audio context
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            analyser = audioContext.createAnalyser();
-            analyser.fftSize = 256;
-            const bufferLength = analyser.frequencyBinCount;
-            dataArray = new Uint8Array(bufferLength);
             
-            // Connect audio source to analyser
-            const source = audioContext.createMediaElementSource(audioPlayer);
-            source.connect(analyser);
-            analyser.connect(audioContext.destination);
-            
-            // Start visualizer
-            drawVisualizer();
+            // Initialize the visualizer with the audio player and context
+            Visualizer.init(audioPlayer, audioContext);
         } else if (audioContext.state === 'suspended') {
             audioContext.resume();
         }
     }
-    
+
     // Functions
     function loadTrack(trackIndex) {
-        if (tracks.length === 0) return; // Guard against empty tracks array
+        if (tracks.length === 0) return;
         
         const track = tracks[trackIndex];
+    
         audioPlayer.src = track.src;
+    
         document.querySelector('.track-title').textContent = track.title;
         document.querySelector('.track-artist').textContent = track.artist;
         
@@ -126,10 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (audioPlayer.volume === 0) {
             audioPlayer.volume = previousVolume;
             volumeSlider.value = previousVolume;
+            volumeHighIcon.style.display = 'block';
+            volumeMuteIcon.style.display = 'none';
         } else {
             previousVolume = audioPlayer.volume;
             audioPlayer.volume = 0;
             volumeSlider.value = 0;
+            volumeHighIcon.style.display = 'none';
+            volumeMuteIcon.style.display = 'block';
         }
     }
     
@@ -144,75 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const clickX = e.offsetX;
         const duration = audioPlayer.duration;
         audioPlayer.currentTime = (clickX / width) * duration;
-    }
-    
-    // ===== VISUALIZER CODE =====
-    function drawVisualizer() {
-        if (!analyser) return;
-        
-        requestAnimationFrame(drawVisualizer);
-        
-        // Get canvas and context
-        const canvas = document.getElementById('visualizer-canvas');
-        const canvasCtx = canvas.getContext('2d');
-        
-        // Make sure canvas dimensions match its display size
-        const rect = canvas.getBoundingClientRect();
-        if (canvas.width !== rect.width || canvas.height !== rect.height) {
-            canvas.width = rect.width;
-            canvas.height = rect.height;
-        }
-        
-        // Get frequency data
-        analyser.getByteFrequencyData(dataArray);
-        
-        // Clear canvas
-        canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-        
-        // Set up for circular visualization
-        const centerX = canvas.width / 2;
-        const centerY = canvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 10;
-        
-        // Draw base circle
-        canvasCtx.beginPath();
-        canvasCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        canvasCtx.fillStyle = '#333';
-        canvasCtx.fill();
-        
-        // Draw frequency bins around circle
-        const binCount = dataArray.length / 2; // Use half the bins for better visual
-        const angleIncrement = (2 * Math.PI) / binCount;
-        
-        for (let i = 0; i < binCount; i++) {
-            const frequency = dataArray[i];
-            const amplitude = frequency / 255; // Normalize to 0-1
-            
-            // Calculate start and end points for lines
-            const angle = i * angleIncrement;
-            const lineLength = amplitude * (radius / 2); // Scale by radius
-            
-            const startX = centerX + (radius * Math.cos(angle));
-            const startY = centerY + (radius * Math.sin(angle));
-            
-            const endX = centerX + ((radius + lineLength) * Math.cos(angle));
-            const endY = centerY + ((radius + lineLength) * Math.sin(angle));
-            
-            // Draw line for this frequency bin
-            canvasCtx.beginPath();
-            canvasCtx.moveTo(startX, startY);
-            canvasCtx.lineTo(endX, endY);
-            canvasCtx.lineWidth = 2;
-            
-            // Color based on frequency
-            const hue = (i / binCount) * 360;
-            canvasCtx.strokeStyle = `hsl(${hue}, 100%, ${50 + amplitude * 50}%)`;
-            canvasCtx.stroke();
-        }
-    }
-    // ===== END VISUALIZER CODE =====
-    
-    // Event Listeners
+    }    
+
     playButton.addEventListener('click', togglePlay);
     prevButton.addEventListener('click', playPrevTrack);
     nextButton.addEventListener('click', playNextTrack);
@@ -220,10 +151,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     volumeSlider.addEventListener('input', () => {
         audioPlayer.volume = volumeSlider.value;
+        
+        // Update volume icons based on current volume
+        const volumeHighIcon = document.getElementById('volume-high-icon');
+        const volumeMuteIcon = document.getElementById('volume-mute-icon');
+        
+        if (audioPlayer.volume === 0) {
+            volumeHighIcon.style.display = 'none';
+            volumeMuteIcon.style.display = 'block';
+        } else {
+            volumeHighIcon.style.display = 'block';
+            volumeMuteIcon.style.display = 'none';
+        }
     });
     
     audioPlayer.addEventListener('timeupdate', updateProgress);
     progressContainer.addEventListener('click', setProgress);
     
     audioPlayer.addEventListener('ended', playNextTrack);
+    initAudio();
 });

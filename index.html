@@ -1,56 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- <link rel="icon" href="favicon.ico" type="image/x-icon"> -->
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GitHub DJ - Music Player</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="player-container">
+    <div class="visualizer-container">
         <canvas id="visualizer-canvas"></canvas>
-        <div class="track-info">
-            <div class="track-title">Loading...</div>
-            <div class="track-artist">Please wait</div>
-        </div>
-        
-        <div class="progress-container" id="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        
-        <div class="time-display">
-            <div id="current-time">0:00</div>
-            <div id="track-duration">0:00</div>
-        </div>
-        
-        <div class="controls">
-            <button class="control-button" id="prev-button">
-                <div class="icon prev-icon"></div>
-            </button>
-            
-            <button class="control-button" id="play-button">
-                <div class="icon play-icon" id="play-icon"></div>
-                <div class="icon pause-icon" id="pause-icon"></div>
-            </button>
-            
-            <button class="control-button" id="next-button">
-                <div class="icon next-icon"></div>
-            </button>
-            
-            <div class="volume-container">
-                <button class="control-button" id="mute-button">
-                    <div class="icon volume-icon" id="volume-icon"></div>
-                </button>
-                <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volume-slider">
+        <div class="player-container">
+ 
+            <div class="track-info">
+                <div class="track-title">Loading...</div>
+                <div class="track-artist">Please wait</div>
             </div>
+            
+            <div class="progress-container" id="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="time-display">
+                <div id="current-time">0:00</div>
+                <div id="track-duration">0:00</div>
+            </div>
+            
+            <div class="controls">
+                <button class="control-button" id="prev-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M6,18V6H8V18H6M9.5,12L18,6V18L9.5,12Z" />
+                    </svg>
+                </button>
+                
+                <button class="control-button" id="play-button">
+                    <svg id="play-icon" width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M8,5.14V19.14L19,12.14L8,5.14Z" />
+                    </svg>
+                    <svg id="pause-icon" width="20" height="20" viewBox="0 0 24 24" style="display:none;">
+                        <path fill="currentColor" d="M14,19H18V5H14M6,19H10V5H6V19Z" />
+                    </svg>
+                </button>
+                
+                <button class="control-button" id="next-button">
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M16,18H18V6H16M6,18L14.5,12L6,6V18Z" />
+                    </svg>
+                </button>
+                
+                <div class="volume-container">
+                    <button class="control-button" id="mute-button">
+                        <svg id="volume-high-icon" width="18" height="18" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M14,3.23V5.29C16.89,6.15 19,8.83 19,12C19,15.17 16.89,17.84 14,18.7V20.77C18,19.86 21,16.28 21,12C21,7.72 18,4.14 14,3.23M16.5,12C16.5,10.23 15.5,8.71 14,7.97V16C15.5,15.29 16.5,13.76 16.5,12M3,9V15H7L12,20V4L7,9H3Z" />
+                        </svg>
+                        <svg id="volume-mute-icon" width="18" height="18" viewBox="0 0 24 24" style="display:none;">
+                            <path fill="currentColor" d="M12,4L9.91,6.09L12,8.18V4M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73L4.27,3Z" />
+                        </svg>
+                    </button>
+                    <input type="range" min="0" max="1" step="0.01" value="1" class="volume-slider" id="volume-slider">
+                </div>
+            </div>
+            
+            <audio id="audio-player">
+                <source src="" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </div>
-        
-        <audio id="audio-player">
-            <source src="" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-    </div>
+    </div>   
 
+    <script src="js/background.js"></script>
+    <script src="js/visualizer.js"></script>
     <script src="js/player.js"></script>
 </body>
 </html>
